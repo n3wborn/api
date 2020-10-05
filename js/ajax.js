@@ -1,7 +1,8 @@
-const mybtn = document.getElementById('btn');
-const resPre = document.getElementById('result');
+// target button used to fetch api endpoints
+const apiFetchBtn = document.getElementById('api-fetch-btn');
 
-// fonction servant à fecth les données recupérées sur endpoint
+
+// fonction servant à fetch les données recupérées sur endpoint
 function fetchApi(endpoint){
 
   // on créé les headers appropriés
@@ -26,7 +27,7 @@ function showRes(target,datas) {
 }
 
 
-mybtn.addEventListener('click', function(){
+apiFetchBtn.addEventListener('click', function(){
   let res = fetchApi('https://jsonplaceholder.typicode.com/todos/1');
 });
 
