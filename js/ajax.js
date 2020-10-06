@@ -1,7 +1,7 @@
 // Constants
 const apiKey = ""
 const apiUrl = "https://api.shodan.io/shodan/"
-const fetchBtn = document.getElementById('api-fetch-btn')  // button clicked to fetch api
+const fetchLink = document.getElementById('api-fetch-link')  // link clicked to fetch api
 
 
 // FETCH API TEST
@@ -22,8 +22,9 @@ const testShodan = async function() {
 }
 
 
-// trigger function when fetchBtn is clicked
-fetchBtn.addEventListener('click', function(){
+// trigger function when fetchLink is clicked
+fetchLink.addEventListener('click', function(e){
+  e.preventDefault();
   let results = testShodan()
   console.log(results)
 });
