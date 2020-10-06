@@ -1,39 +1,29 @@
-// target button used to fetch api endpoints
-const apiFetchBtn = document.getElementById('api-fetch-btn');
+// Constants
+const apiKey = ""
+const apiUrl = "https://api.shodan.io/shodan/"
+const fetchBtn = document.getElementById('api-fetch-btn')  // button clicked to fetch api
 
 
-// fonction servant à fetch les données recupérées sur endpoint
-function fetchApi(endpoint){
-
-  // on créé les headers appropriés
-  let myHeaders = new Headers();
-  myHeaders.append('Accept', 'application/json');
-  let myInit = {headers : myHeaders}
-
-  let response = '';
-  let json = '';
-
-  // fetch
-  window.fetch(endpoint, myInit)
-  .then(response => response.json())
-  .then(json => console.log(json))
+// FETCH API TEST
+// testShodan will try to fetch shodan api and return default password protected cams
+const testShodan = async function() {
+  try {
+    let query = apiUrl + 'host/8.8.8.8?key=' + apiKey
+    let response = await fetch(query)
+    if (response.ok) {
+      let data = await response.json()
+      console.log(data)
+    } else {
+      console.error('[testShodan]', response.status)
+    }
+  } catch(e) {
+    console.error('[testShodan]', e)
+  }
 }
 
 
-// showRes va remplir l'element target de datas
-function showRes(target,datas) {
-  // on vide le contenu de target
-  target.innerText = datas;
-}
-
-
-apiFetchBtn.addEventListener('click', function(){
-  let res = fetchApi('https://jsonplaceholder.typicode.com/todos/1');
+// trigger function when fetchBtn is clicked
+fetchBtn.addEventListener('click', function(){
+  let results = testShodan()
+  console.log(results)
 });
-
-
-
-
-
-// test de fetchApi sur jsonplaceholder
-// let res = fetchApi('https://jsonplaceholder.typicode.com/todos/1');
