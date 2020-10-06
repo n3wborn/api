@@ -74,7 +74,12 @@
   font-size: $size;
 }
 
+@mixin fetch-api-btn ($color: #FFF, $border-color: #FFF) {
+  color: $color;
+  border-color: $border-color;
+  padding: 0.5rem 3.5rem;
+}
 
-button {
-  @include fontroboto;
+#api-fetch-link {
+  @include fetch-api-btn;
 }
