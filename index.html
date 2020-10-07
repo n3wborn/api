@@ -12,25 +12,42 @@
 
 <body>
 
-  <div class="row">
-    <div class="col-2">
-      <nav class="navbar navbar-dark bg-dark justify-content-around">
-        <ul class="navbar-nav p-3">
-          <li class="nav-item">
-            <a class="btn btn-outline-secondary" role="button" href="/" id="api-fetch-link">Fetch API</a>
-          </li>
+  <div class="row h-100">
+
+    <!-- left vert-nav area -->
+    <div class="col-2 h-100">
+      <nav class="navbar navbar-dark bg-dark justify-content-around h-100">
+        <ul class="navbar-nav p-3 w-100 h-100">
+
+          <div class="flex-fill">
+            <li class="nav-item py-5 px-2">
+              <a href="/" class="brand"><img src="artefacts/logo.png" alt="Shodan Developer"></a>
+            </li>
+          </div>
+
+          <div class="flex-fill">
+            <li class="nav-item  p-2">
+              <a class="btn btn-outline-secondary btn-block" role="button" href="/" id="api-fetch-link">Test API</a>
+            </li>
+            <li class="nav-item  p-2">
+              <a class="btn btn-outline-secondary btn-block" role="button" href="/" id="api-query-search-link">Search API</a>
+            </li>
+          </div>
+
         </ul>
       </nav>
     </div>
 
-    <div class="col-10">
-      <!-- content here -->
+    <!-- right "to be filled" area -->
+    <div class="col-10 h-100">
     </div>
+
   </div>
 
 
   <script type="text/javascript" src="js/ajax.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
+
 </body>
 </html>
