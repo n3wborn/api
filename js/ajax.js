@@ -22,8 +22,21 @@ const fetchHeaders = new Headers({
 const fetchInit = {
   method: 'GET',
   headers: fetchHeaders,
-  mode: 'cors',
-  cache: 'default'
+};
+
+
+// PreFlight Headers
+const pfHeaders =  {
+  'Origin': '127.0.0.1',
+  'Access-Control-Request-Method' : 'PUT',
+  'Host': 'api.shodan.io',
+}
+
+
+// PreFlight OPTION method
+const pfInit = {
+  method: 'OPTION',
+  headers: pfHeaders
 };
 
 
@@ -46,6 +59,28 @@ const testShodan = async function() {
     console.error('[testShodan]', e)
   }
 }
+
+
+// Fetch() CORS-preflight request (needed to fetch cors related url's)
+//
+// corsPreFlightReq('https://api.shodan.io/shodan/host/search?key=' + apiKey, pfInit)
+const corsPreFlightReq = async function(url, pfInit) {
+  try {
+    let response = await fetch(url, headers)
+    if (response.ok) {
+      let result = await response.json()
+      console.log(result)
+    } else {
+      console.log('[preflight] ',result.status)
+    }
+  } catch(e) {
+    console.error('[preflight] ', e)
+  }
+}
+
+
+
+
 
 
 // Search query as if searching through shodan website
