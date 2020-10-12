@@ -6,43 +6,7 @@ const apiKey = ""
 const apiUrl = "https://api.shodan.io/shodan/"
 
 
-// Fetch -- Headers
-const fetchHeaders = new Headers({
-  'Accept': 'text/html',
-  'Accept-Encoding': 'gzip, deflate, br',
-  'connection': 'keep-alive',
-  'DNT': '1',
-  'Host': 'api.shodan.io',
-  'Upgrade-Insecure-Requests': '1',
-  'credentials': 'include'
-});
-
-
-// Fetch -- Init
-const fetchInit = {
-  method: 'GET',
-  headers: fetchHeaders,
-};
-
-
-// PreFlight Headers
-const pfHeaders =  {
-  'Origin': '127.0.0.1',
-  'Access-Control-Request-Method' : 'PUT',
-  'Host': 'api.shodan.io',
-}
-
-
-// PreFlight OPTION method
-const pfInit = {
-  method: 'OPTION',
-  headers: pfHeaders
-};
-
-
-
 // API Functions
-
 
 // testShodan only test api serching for google dns server (8.8.8.8) infos
 const testShodan = async function() {
@@ -61,56 +25,41 @@ const testShodan = async function() {
 }
 
 
-// Fetch() CORS-preflight request (needed to fetch cors related url's)
-//
-// corsPreFlightReq('https://api.shodan.io/shodan/host/search?key=' + apiKey, pfInit)
-const corsPreFlightReq = async function(url, pfInit) {
+// fetchTest is born to inverstigate why url with params other than apiKey return errors
+const fetchTest = async function(url) {
   try {
-    let response = await fetch(url, headers)
-    if (response.ok) {
-      let result = await response.json()
-      console.log(result)
-    } else {
-      console.log('[preflight] ',result.status)
-    }
-  } catch(e) {
-    console.error('[preflight] ', e)
-  }
-}
+    let response = await fetch(url, {
+    method: "GET",
+    mode: "cors",
+    cache: 'no-cache',
+    Headers: {
+      'Accept': '*/*',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Accept-Language': 'fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3',
+      'Cache-Control': 'no-cache',
+      'Connection' : 'keep-alive',
+      'Host': 'api.shodan.io',
+      'Origin': 'http://127.0.0.1:8080',
+      'Pragma': 'no-cache',
+      'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0',
+    },
+    redirect: 'follow',
+    Referer: 'http://127.0.0.1:8080/'
+    })
 
-
-
-
-
-
-// Search query as if searching through shodan website
-const querySearch = async function(queryString) {
-  try {
-
-    // build url and parameters
-    let url = new URL('https://api.shodan.io/shodan/host/search'),
-    params = {
-      key:apiKey,
-      query:queryString
-    }
-
-    // append each parameters to searchParams
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-
-    // keep fetched url in response
-    let response = await fetch(url, fetchInit)
-    // check our headers
-    console.log
     if (response.ok) {
       let data = await response.json()
       console.log(data)
     } else {
-      console.error('[search]', response.status)
+      console.error('[testShodan]', response.status)
     }
   } catch(e) {
-    console.error('[search]', e)
+    console.error('[testShodan]', e)
   }
 }
+
+//fetchTest('https://api.shodan.io/shodan/ports?key=' + apiKey)
+
 
 
 // Ask shodan about http headers we send them
@@ -133,10 +82,9 @@ let clientHttpHeaders = async function() {
 
 // EVENT LISTENERS
 
-
 // links targeted to trigger api call
 const fetchLink = document.getElementById('api-fetch-link')
-const querySearchLink = document.getElementById('api-query-search-link')
+const fetchTestLink = document.getElementById('api-fetch-test-link')
 
 
 // trigger testShodan()
@@ -148,8 +96,8 @@ fetchLink.addEventListener('click', function(e){
 
 
 // trigger querySearch()
-querySearchLink.addEventListener('click', function(e){
+fetchTestLink.addEventListener('click', function(e){
   e.preventDefault();
-  let results = querySearch('webcam')
+  let results = fetchTest('https://api.shodan.io/shodan/ports?key=' + apiKey)
   console.log(results)
 });
