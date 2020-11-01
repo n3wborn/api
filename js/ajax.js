@@ -31,17 +31,18 @@ const fetchTest = async function(url) {
     let response = await fetch(url, {
     method: "GET",
     mode: "cors",
+    // errrors with credentials ! still here (shows maybe interesting errors) but fail
+    credentials: 'include',
     cache: 'no-cache',
     Headers: {
-      'Accept': '*/*',
-      'Accept-Encoding': 'gzip, deflate, br',
-      'Accept-Language': 'fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3',
-      'Cache-Control': 'no-cache',
-      'Connection' : 'keep-alive',
       'Host': 'api.shodan.io',
+      'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'Accept-Language': 'fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Connection' : 'keep-alive',
       'Origin': 'http://127.0.0.1:8080',
       'Pragma': 'no-cache',
-      'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0',
     },
     redirect: 'follow',
     Referer: 'http://127.0.0.1:8080/'
@@ -58,8 +59,16 @@ const fetchTest = async function(url) {
   }
 }
 
-//fetchTest('https://api.shodan.io/shodan/ports?key=' + apiKey)
+// Debug: Check if url query parameters (not sure if api key must be part of query)
+let url = new URL("https://api.shodan.io/shodan/host/search"),
+    params = {
+      key:"",
+      query:"apache"
+}
 
+Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+console.log(url)
+fetchTest(url)
 
 
 // Ask shodan about http headers we send them
@@ -91,7 +100,7 @@ const fetchTestLink = document.getElementById('api-fetch-test-link')
 fetchLink.addEventListener('click', function(e){
   e.preventDefault();
   let results = testShodan()
-  console.log(results)
+  console.log('[testShodan]', results)
 });
 
 
