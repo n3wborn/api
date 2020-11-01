@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+
+  mariadb:
+    image: mariadb:10.4
+    container_name: api-db
+    ports:
+      - 3306:3306
+    volumes:
+      - api-db-data:/var/lib/mysql:z
+    environment:
+      - MYSQL_ROOT_PASSWORD=mariadb
+    restart: unless-stopped
+
+  php-apache:
+    image: webdevops/php-apache
+    container_name: api-srv
+    ports:
+      - 8080:80
+    volumes:
+      - "./:/app:z"
+    environment:
+      - PHP_DISPLAY_ERRORS=On
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: api-pma
+    ports:
+      - 8081:80
+    environment:
+      - PMA_HOST=mariadb
+      - MYSQL_ROOT_PASSWORD=mariadb
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+
+volumes:
+  api-db-data:
